@@ -69,17 +69,38 @@ class Play extends Phaser.Scene {
 
         // play clock
         scoreConfig.fixedWidth = 0;
-        this.clock = this.time.delayedCall(60000, () => {
+        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+
+        // this.timer = game.time.create();
+        // this.timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 0, gameOver, this);
+        // timer.start();
+
+        // let timeConfig = {
+        //     fontFamily :'Courier',
+        //     fontSize: '28px',
+        //     backgroundColor: '#F3B141',
+        //     color: '#843605',
+        //     allign: 'right',
+        //     padding: {
+        //         top: 5,
+        //         bottom: 5,
+        //     },
+        //     fixedWidth: 100
+        // }
+        // timeLeft = this.add.text(borderUISize + borderPadding*43, borderUISize + borderPadding*2, game.settings.gameTimer, timeConfig);
     }
 
     update() {
 
         if ( this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
+        }
+        if( this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+            this.scene.start("menuScene");
         }
         this.starfield.tilePositionX -= 4;
         
@@ -138,7 +159,33 @@ class Play extends Phaser.Scene {
         // score add and repaint
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
+
+        // plays sound
+        this.sound.play('sfx_explosion');
+        
     }
+
+    // timer() {
+    //     var remainingTime = timerEvent.delay - timer.ms;
+    //     var seconds = Math.floor(remainingTime / 1000) % 60;
+    //     var minutes = Math.floor(remainingTime / 60000);
+    //     timerText.text = 'Time: ' + (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+    // }
+    // timer (){
+    //     let timeConfig = {
+    //         fontFamily :'Courier',
+    //         fontSize: '28px',
+    //         backgroundColor: '#F3B141',
+    //         color: '#843605',
+    //         allign: 'right',
+    //         padding: {
+    //             top: 5,
+    //             bottom: 5,
+    //         },
+    //         fixedWidth: 100
+    //     }
+    //     this.timeLeft = this.add.text(borderUISize + borderPadding*43, borderUISize + borderPadding*2, game.settings.gameTimer, timeConfig);
+    // }
 }
 
 
