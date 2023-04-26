@@ -11,10 +11,26 @@ class Rocket extends Phaser.GameObjects.Sprite {
 
     } 
 
+    
     update() {
+
+            let displayConfig = {
+                fontFamily :'Courier',
+                fontSize: '28px',
+                backgroundColor: '#F3B141',
+                color: '#843605',
+                allign: 'right',
+                padding: {
+                    top: 5,
+                    bottom: 5,
+                },
+                fixedWidth: 100
+            }
 
         // left/right movement, is down = holding key
         if(!this.isFiring) {
+
+
             if(keyLEFT.isDown && this.x >= borderUISize + this.width) {
                 this.x -= this.moveSpeed;
             } else if (keyRIGHT.isDown && this.x <= game.config.width - borderUISize - this.width) {
@@ -24,6 +40,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
 
         // fire button, just down = tap key
         if(Phaser.Input.Keyboard.JustDown(keyF) && !this.isFiring) {
+            // this.fire = this.add.text(borderUISize + borderPadding*43, borderUISize + borderPadding*2, "FIRE", displayConfig);
             this.isFiring = true;
             this.sfxRocket.play(); // playf sfx
         }
@@ -44,4 +61,5 @@ class Rocket extends Phaser.GameObjects.Sprite {
         this.isFiring = false;
         this.y = game.config.height - borderUISize - borderPadding;
     }
+
 }

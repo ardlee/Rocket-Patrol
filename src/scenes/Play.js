@@ -28,10 +28,12 @@ class Play extends Phaser.Scene {
         // add rocket (P1)
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
 
+
         // add spaceships (x3)
         this.ship1 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0, 0);
         this.ship2 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0);
         this.ship3 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0);
+        // this.ship4 = new fastShip(this, game.config.width + borderUISize*9, borderUISize*9, 'spaceship', 0, 35).setOrigin(0,0);
 
         // define reserve keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -75,23 +77,37 @@ class Play extends Phaser.Scene {
             this.gameOver = true;
         }, null, this);
 
-        // this.timer = game.time.create();
-        // this.timerEvent = timer.add(Phaser.Timer.MINUTE * 1 + Phaser.Timer.SECOND * 0, gameOver, this);
-        // timer.start();
+        
 
-        // let timeConfig = {
-        //     fontFamily :'Courier',
-        //     fontSize: '28px',
-        //     backgroundColor: '#F3B141',
-        //     color: '#843605',
-        //     allign: 'right',
-        //     padding: {
-        //         top: 5,
-        //         bottom: 5,
-        //     },
-        //     fixedWidth: 100
-        // }
-        // timeLeft = this.add.text(borderUISize + borderPadding*43, borderUISize + borderPadding*2, game.settings.gameTimer, timeConfig);
+        let timeConfig = {
+            fontFamily :'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            allign: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
+        this.timeLeft = this.add.text(borderUISize + borderPadding*43, borderUISize + borderPadding*2, game.settings.gameTimer, timeConfig);
+
+        let displayConfig = {
+            fontFamily :'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            allign: 'center',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 115
+        }
+        
+        this.fire = this.add.text(borderUISize + borderPadding*23, borderUISize + borderPadding*2, "FIRE", displayConfig);
+        
     }
 
     update() {
@@ -111,6 +127,8 @@ class Play extends Phaser.Scene {
             this.ship1.update();
             this.ship2.update();
             this.ship3.update();
+            
+            // this.ship4.update();
         }
 
         // check collisions update
@@ -126,6 +144,25 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset();
             this.shipExplode(this.ship1);
         }
+
+        // if(this.checkCollision (this.p1Rocket, this.ship4)) {
+        //     this.p1Rocket.reset();
+        //     this.shipExplode(this.ship4);
+        // }
+
+       
+
+        if(this.p1Rocket.isFiring){
+
+            this.fire.text = "";
+        }
+        else{
+
+            this.fire.text = "Fire";
+        }
+     
+        this.timeLeft.text = this.clock.getRemainingSeconds()|0;
+
     }
 
 
@@ -165,27 +202,9 @@ class Play extends Phaser.Scene {
         
     }
 
-    // timer() {
-    //     var remainingTime = timerEvent.delay - timer.ms;
-    //     var seconds = Math.floor(remainingTime / 1000) % 60;
-    //     var minutes = Math.floor(remainingTime / 60000);
-    //     timerText.text = 'Time: ' + (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-    // }
-    // timer (){
-    //     let timeConfig = {
-    //         fontFamily :'Courier',
-    //         fontSize: '28px',
-    //         backgroundColor: '#F3B141',
-    //         color: '#843605',
-    //         allign: 'right',
-    //         padding: {
-    //             top: 5,
-    //             bottom: 5,
-    //         },
-    //         fixedWidth: 100
-    //     }
-    //     this.timeLeft = this.add.text(borderUISize + borderPadding*43, borderUISize + borderPadding*2, game.settings.gameTimer, timeConfig);
-    // }
+    
+
+
 }
 
 
